@@ -11,7 +11,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		51B2E45D2D002D1600CB1E1C /* CryptoTracker */ = {
+		51B2E4CC2D019F8B00CB1E1C /* CryptoTracker */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = CryptoTracker;
 			sourceTree = "<group>";
@@ -32,7 +32,7 @@
 		51B2E4522D002D1600CB1E1C = {
 			isa = PBXGroup;
 			children = (
-				51B2E45D2D002D1600CB1E1C /* CryptoTracker */,
+				51B2E4CC2D019F8B00CB1E1C /* CryptoTracker */,
 				51B2E45C2D002D1600CB1E1C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -61,7 +61,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				51B2E45D2D002D1600CB1E1C /* CryptoTracker */,
+				51B2E4CC2D019F8B00CB1E1C /* CryptoTracker */,
 			);
 			name = CryptoTracker;
 			packageProductDependencies = (
@@ -251,7 +251,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"CryptoTracker/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"CryptoTracker/Main/Preview Content\"";
 				DEVELOPMENT_TEAM = SHR59DG262;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -280,7 +280,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"CryptoTracker/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"CryptoTracker/Main/Preview Content\"";
 				DEVELOPMENT_TEAM = SHR59DG262;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;

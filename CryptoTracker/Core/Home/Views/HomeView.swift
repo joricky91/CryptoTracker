@@ -40,12 +40,12 @@ struct HomeView: View {
     }
 }
 
-#Preview {
-    NavigationStack {
-        HomeView()
-    }
-    .environmentObject(DeveloperPreview.instance.homeViewModel)
-}
+//#Preview {
+//    NavigationStack {
+//        HomeView()
+//    }
+//    .environmentObject(DeveloperPreview.instance.homeViewModel)
+//}
 
 extension HomeView {
     
