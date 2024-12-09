@@ -22,6 +22,8 @@ struct HomeView: View {
             VStack {
                 homeHeader
                 
+                SearchBarView(searchText: $viewModel.searchText)
+                
                 columnTitles
                 
                 if !showPortfolio {
@@ -40,12 +42,12 @@ struct HomeView: View {
     }
 }
 
-//#Preview {
-//    NavigationStack {
-//        HomeView()
-//    }
-//    .environmentObject(DeveloperPreview.instance.homeViewModel)
-//}
+#Preview {
+    NavigationStack {
+        HomeView()
+    }
+    .environmentObject(DeveloperPreview.instance.homeViewModel)
+}
 
 extension HomeView {
     
