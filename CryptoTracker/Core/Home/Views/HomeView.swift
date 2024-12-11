@@ -112,6 +112,9 @@ extension HomeView {
             }
         }
         .listStyle(.plain)
+        .refreshable {
+            viewModel.reloadData()
+        }
     }
     
     private var portfolioCoinsList: some View {
