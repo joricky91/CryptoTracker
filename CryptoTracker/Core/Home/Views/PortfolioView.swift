@@ -37,6 +37,11 @@ struct PortfolioView: View {
                     trailingNavbarButton
                 }
             }
+            .onChange(of: viewModel.searchText) { oldValue, newValue in
+                if newValue == "" {
+                    removeSelectedCoin()
+                }
+            }
         }
     }
 }
@@ -51,13 +56,13 @@ extension PortfolioView {
     private var coinLogoCollection: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 10) {
-                ForEach(viewModel.allCoins) { coin in
+                ForEach(viewModel.searchText.isEmpty ? viewModel.portfolioCoins : viewModel.allCoins) { coin in
                     CoinLogoView(coin: coin)
                         .frame(width: 75)
                         .padding(4)
                         .onTapGesture {
                             withAnimation(.easeIn) {
-                                selectedCoin = coin
+                                updateSelectedCoin(coin: coin)
                             }
                         }
                         .background(
@@ -69,6 +74,16 @@ extension PortfolioView {
             }
             .frame(height: 120)
             .padding(.leading)
+        }
+    }
+    
+    private func updateSelectedCoin(coin: CoinModel) {
+        selectedCoin = coin
+        if let portfolioCoin = viewModel.portfolioCoins.first(where: { $0.id == coin.id }),
+            let amount = portfolioCoin.currentHoldings {
+            quantityText = "\(amount)"
+        } else {
+            quantityText = ""
         }
     }
     
@@ -133,9 +148,10 @@ extension PortfolioView {
     }
     
     private func saveButtonPressed() {
-        guard let _ = selectedCoin else { return }
+        guard let selectedCoin, let amount = Double(quantityText) else { return }
         
-        // Save to portfolio
+        viewModel.updatePortfolio(coin: selectedCoin, amount: amount)
+        
         withAnimation(.easeIn) {
             showCheckmark = true
             removeSelectedCoin()

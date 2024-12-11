@@ -34,8 +34,19 @@ struct HomeView: View {
                 columnTitles
                 
                 if !showPortfolio {
-                    allCoinsList
-                        .transition(.move(edge: .leading))
+                    if viewModel.allCoins.isEmpty {
+                        VStack {
+                            Spacer()
+                            
+                            ProgressView()
+                                .controlSize(.large)
+                            
+                            Spacer()
+                        }
+                    } else {
+                        allCoinsList
+                            .transition(.move(edge: .leading))
+                    }
                 }
                 
                 if showPortfolio {
