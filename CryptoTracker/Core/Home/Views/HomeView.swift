@@ -13,6 +13,9 @@ struct HomeView: View {
     @State private var showPortfolio: Bool = false
     @State private var showPortfolioView: Bool = false
     
+    @State private var selectedCoin: CoinModel? = nil
+    @State private var showDetailView: Bool = false
+    
     var body: some View {
         ZStack {
             // Background layer
@@ -106,12 +109,19 @@ extension HomeView {
     private var allCoinsList: some View {
         List {
             ForEach(viewModel.allCoins) { coin in
-                CoinRowView(coin: coin,
-                            showHoldings: false)
-                .listRowInsets(.init(top: 10, leading: 0, bottom: 10, trailing: 10))
+                ZStack {
+                    NavigationLink("", value: coin)
+                        .opacity(0)
+                    
+                    CoinRowView(coin: coin, showHoldings: false)
+                }
+                .listRowInsets(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
             }
         }
         .listStyle(.plain)
+        .navigationDestination(for: CoinModel.self) { coin in
+            DetailView(coin: coin)
+        }
         .refreshable {
             viewModel.reloadData()
         }
@@ -120,12 +130,23 @@ extension HomeView {
     private var portfolioCoinsList: some View {
         List {
             ForEach(viewModel.portfolioCoins) { coin in
-                CoinRowView(coin: coin,
-                            showHoldings: true)
+                ZStack {
+                    NavigationLink("", value: coin)
+                        .opacity(0)
+                    
+                    CoinRowView(coin: coin, showHoldings: true)
+                }
                 .listRowInsets(.init(top: 10, leading: 0, bottom: 10, trailing: 10))
             }
         }
         .listStyle(.plain)
+        .navigationDestination(for: CoinModel.self) { coin in
+            DetailView(coin: coin)
+        }
+    }
+    
+    private func segue(coin: CoinModel) {
+        
     }
     
     private var columnTitles: some View {
