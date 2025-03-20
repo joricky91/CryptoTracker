@@ -10,6 +10,8 @@ import SwiftUI
 struct DetailView: View {
     
     @StateObject private var viewModel: DetailViewModel
+    @State private var showFullDescription: Bool = false
+    
     private let columns: [GridItem] = [GridItem(.flexible()), GridItem(.flexible())]
     private let spacing: CGFloat = 30
     
@@ -25,8 +27,9 @@ struct DetailView: View {
                 
                 VStack(spacing: 20) {
                     titleText(text: "Overview")
-                    
                     Divider()
+                    
+                    descriptionSection
                     
                     gridView(items: viewModel.overviewStatistics)
                     
@@ -35,6 +38,8 @@ struct DetailView: View {
                     Divider()
                     
                     gridView(items: viewModel.additionalStatistics)
+                    
+                    websiteSection
                 }
                 .padding()
             }
@@ -56,6 +61,47 @@ struct DetailView: View {
 }
 
 extension DetailView {
+    
+    private var websiteSection: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            if let websiteString = viewModel.websiteURL, let url = URL(string: websiteString) {
+                Link("Website", destination: url)
+            }
+            
+            if let redditString = viewModel.redditURL, let url = URL(string: redditString) {
+                Link("Reddit", destination: url)
+            }
+        }
+        .accentColor(.blue)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .font(.headline)
+    }
+    
+    private var descriptionSection: some View {
+        ZStack {
+            if let description = viewModel.coinDescription, !description.isEmpty {
+                VStack(alignment: .leading) {
+                    Text(description)
+                        .lineLimit(showFullDescription ? nil : 3)
+                        .font(.callout)
+                        .foregroundStyle(Color.theme.secondaryText)
+                    
+                    Button {
+                        withAnimation(.easeInOut) {
+                            showFullDescription.toggle()
+                        }
+                    } label: {
+                        Text(showFullDescription ? "Less" : "Read more...")
+                            .font(.caption)
+                            .fontWeight(.bold)
+                            .padding(.vertical, 4)
+                    }
+                    .accentColor(.blue)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+        }
+    }
     
     private func titleText(text: String) -> some View {
         Text(text)
