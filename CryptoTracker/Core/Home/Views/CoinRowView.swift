@@ -23,6 +23,7 @@ struct CoinRowView: View {
             }
             
             rightColumn
+                .padding(.trailing, 12)
         }
         .font(.subheadline)
     }
