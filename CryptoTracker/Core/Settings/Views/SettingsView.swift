@@ -72,7 +72,7 @@ extension SettingsView {
             VStackLayout(alignment: .leading) {
                 Image("coingecko")
                     .resizable()
-                    .frame(height: 100)
+                    .frame(height: UIScreen.main.bounds.height / 9)
                     .scaledToFit()
                     .clipShape(RoundedRectangle(cornerRadius: 20))
                 

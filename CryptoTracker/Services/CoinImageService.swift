@@ -37,18 +37,18 @@ class CoinImageService {
     private func downloadCoinImage() {
         guard let url = URL(string: coin.image) else { return }
         
-        imageSubscription = NetworkingManager.download(url: url)
-            .tryMap { data -> UIImage? in
-                return UIImage(data: data)
+        Task {
+            do {
+                let data = try await NetworkingManager.shared.downloadImage(from: url)
+                guard let downloadedImage = UIImage(data: data) else { return }
+                self.image = downloadedImage
+                self.fileManager.saveImage(image: downloadedImage,
+                                           imageName: self.imageName,
+                                           folderName: self.folderName)
+            } catch {
+                print(error.localizedDescription)
             }
-            .sink { completion in
-                NetworkingManager.handleCompletion(completion: completion)
-            } receiveValue: { [weak self] returnedImage in
-                guard let self, let returnedImage else { return }
-                self.image = returnedImage
-                self.imageSubscription?.cancel()
-                self.fileManager.saveImage(image: returnedImage, imageName: self.imageName, folderName: self.folderName)
-            }
+        }
     }
     
 }

@@ -22,29 +22,29 @@ class DetailViewModel: ObservableObject {
     
     init(coin: CoinModel) {
         self.coin = coin
-        self.coinDetailService = CoinDetailDataService(coin: coin)
-        self.addSubscribers()
+        self.coinDetailService = CoinDetailDataService()
+//        self.addSubscribers()
     }
     
-    private func addSubscribers() {
-        coinDetailService.$coinDetails
-            .combineLatest($coin)
-            .map(mapDataToStatistics)
-            .sink { [weak self] returnedArrays in
-                self?.overviewStatistics = returnedArrays.overview
-                self?.additionalStatistics = returnedArrays.additional
-            }
-            .store(in: &cancellables)
-        
-        coinDetailService.$coinDetails
-            .sink { [weak self] returnedCoinDetails in
-                self?.coinDescription = returnedCoinDetails?.readableDescription
-                self?.websiteURL = returnedCoinDetails?.links?.homepage?.first
-                self?.redditURL = returnedCoinDetails?.links?.subredditURL
-                print(self?.coinDescription)
-            }
-            .store(in: &cancellables)
-    }
+//    private func addSubscribers() {
+//        coinDetailService.$coinDetails
+//            .combineLatest($coin)
+//            .map(mapDataToStatistics)
+//            .sink { [weak self] returnedArrays in
+//                self?.overviewStatistics = returnedArrays.overview
+//                self?.additionalStatistics = returnedArrays.additional
+//            }
+//            .store(in: &cancellables)
+//        
+//        coinDetailService.$coinDetails
+//            .sink { [weak self] returnedCoinDetails in
+//                self?.coinDescription = returnedCoinDetails?.readableDescription
+//                self?.websiteURL = returnedCoinDetails?.links?.homepage?.first
+//                self?.redditURL = returnedCoinDetails?.links?.subredditURL
+//                print(self?.coinDescription)
+//            }
+//            .store(in: &cancellables)
+//    }
     
     private func mapDataToStatistics(coinDetail: CoinDetailModel?, coinModel: CoinModel) -> (overview: [StatisticModel], additional: [StatisticModel]) {
         
