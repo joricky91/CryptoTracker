@@ -17,41 +17,32 @@ class DetailViewModel: ObservableObject {
     @Published var websiteURL: String? = nil
     @Published var redditURL: String? = nil
     
-    private let coinDetailService: CoinDetailDataService
     private var cancellables = Set<AnyCancellable>()
     
     init(coin: CoinModel) {
         self.coin = coin
-        self.coinDetailService = CoinDetailDataService()
-//        self.addSubscribers()
+        self.getCoinDetails()
     }
     
-//    private func addSubscribers() {
-//        coinDetailService.$coinDetails
-//            .combineLatest($coin)
-//            .map(mapDataToStatistics)
-//            .sink { [weak self] returnedArrays in
-//                self?.overviewStatistics = returnedArrays.overview
-//                self?.additionalStatistics = returnedArrays.additional
-//            }
-//            .store(in: &cancellables)
-//        
-//        coinDetailService.$coinDetails
-//            .sink { [weak self] returnedCoinDetails in
-//                self?.coinDescription = returnedCoinDetails?.readableDescription
-//                self?.websiteURL = returnedCoinDetails?.links?.homepage?.first
-//                self?.redditURL = returnedCoinDetails?.links?.subredditURL
-//                print(self?.coinDescription)
-//            }
-//            .store(in: &cancellables)
-//    }
+    func getCoinDetails() {
+        Task {
+            do {
+                let coinDetail: CoinDetailModel = try await NetworkingManager.shared.getData(from: .coinDetails(id: coin.id))
+                mapCoinDetailData(coinDetail: coinDetail, coinModel: coin)
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+    }
     
-    private func mapDataToStatistics(coinDetail: CoinDetailModel?, coinModel: CoinModel) -> (overview: [StatisticModel], additional: [StatisticModel]) {
-        
-        let overviewArray = createOverviewArray(coinModel: coinModel)
-        let additionalArray = createAdditionalArray(coinDetail: coinDetail, coinModel: coinModel)
-
-        return (overviewArray, additionalArray)
+    private func mapCoinDetailData(coinDetail: CoinDetailModel?, coinModel: CoinModel) {
+        DispatchQueue.main.async {
+            self.overviewStatistics = self.createOverviewArray(coinModel: coinModel)
+            self.additionalStatistics = self.createAdditionalArray(coinDetail: coinDetail, coinModel: coinModel)
+            self.coinDescription = coinDetail?.readableDescription
+            self.websiteURL = coinDetail?.links?.homepage?.first
+            self.redditURL = coinDetail?.links?.subredditURL
+        }
     }
     
     func createOverviewArray(coinModel: CoinModel) -> [StatisticModel] {

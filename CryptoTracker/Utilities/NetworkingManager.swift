@@ -12,7 +12,7 @@ enum Endpoints {
     
     case global
     case markets(page: Int)
-    case coinDetails(id: Int)
+    case coinDetails(id: String)
     
     var path: String {
         switch self {
